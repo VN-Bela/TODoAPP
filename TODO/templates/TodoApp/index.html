@@ -1,0 +1,80 @@
+{% extends 'TodoApp/base.html'%}
+{% block content %}
+<div>
+<div class="container pt-4">
+    <div class="row p-0 mt-4">
+        <div class="col-lg-5 shadow mx-auto p-0"> 
+            <div class="alert alert-success">
+                <h2> Add New TODO </h2></div>
+                <div class="p-4">
+                <form method="post" action="/todo_add/">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <br/>
+                    <input class="btn btn-success" type="submit" value="Add Todo Task"/>
+                </form>
+                </div>
+            </div>
+          
+          
+
+            <div class="col">
+                <div class="border">
+                  {% if todos|length == 0 %} <!-- if object len is0 -->
+                   <div class="p-4">
+                    <br/><br/>
+                    <div class="alert alert-info text-center">
+                        <p class="" style="font-size: 30px;">No Todos</p>
+                    </div>
+                    <br/>
+                    <br/>
+                   </div>
+                  {%else%}
+                
+                  <div >
+                    <table class="table">
+                        <thead >
+                            <tr>
+                                <th>SRNO</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                            {% for todo in todos %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{todo.title}}</td>
+                                {% if  todo.status == 'C' %}
+                                <td>✔️</td>
+                                {% else %}
+                                <td>🕛</td>
+                                {% endif %}
+                                <td>{{todo.priority}}</td>
+                               
+                                <td>
+                                    <a href="delete_todo/{{todo.id}}" class="" title="Delete">🗑️</a>
+                                    {% if  todo.status == 'P' %}
+                                    <a href="todo_done/{{todo.id}}/C" class="" title="Mark Completed">✔️</a>
+                                    {% else %}
+                                    <a href="todo_done/{{todo.id}}/P" class="" title="Pending">🕛</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {%endfor%}
+                           
+                        </tbody>
+                    </table>
+                   </div>
+                  {%endif%}
+                </div>
+            </div>
+    </div>
+    
+</div>
+</div>
+{% endblock %}
+   
